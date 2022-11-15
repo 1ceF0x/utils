@@ -8,16 +8,16 @@ import (
 	"time"
 )
 
+const letterBytes = "abcdefghijklmnopqrstuvwxyz"
+const letterNumberBytes = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const lowletterNumberBytes = "0123456789abcdefghijklmnopqrstuvwxyz"
 const (
-	letterBytes          = "abcdefghijklmnopqrstuvwxyz"
-	letterNumberBytes    = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	lowletterNumberBytes = "0123456789abcdefghijklmnopqrstuvwxyz"
-	letterIdxBits        = 6                    // 6 bits to represent a letter index
-	letterIdxMask        = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
-	letterIdxMax         = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+	letterIdxBits = 6                    // 6 bits to represent a letter index
+	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
-// RandFromChoices 从choices里面随机获取
+// 从字符里里面随机获取
 func RandFromChoices(choices string, n int) string {
 	b := make([]byte, n)
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -36,21 +36,22 @@ func RandFromChoices(choices string, n int) string {
 	return string(b)
 }
 
-// RandLetters 随机小写字母
+// 随机小写字母
 func RandLetters(n int) string {
 	return RandFromChoices(letterBytes, n)
 }
 
-// RandLetterNumbers 随机大小写字母和数字
+// 随机大小写字母和数字
 func RandLetterNumbers(n int) string {
 	return RandFromChoices(letterNumberBytes, n)
 }
 
-// RandLowLetterNumber 随机小写字母和数字
+// 随机小写字母和数字
 func RandLowLetterNumber(n int) string {
 	return RandFromChoices(lowletterNumberBytes, n)
 }
 
+// 随机字符
 func RandomString(len int) string {
 	var container string
 	var str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
@@ -64,7 +65,7 @@ func RandomString(len int) string {
 	return container
 }
 
-// RandomUA will return a random user agent.
+// 随机UA
 func RandomUA() string {
 	userAgent := [...]string{
 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:103.0) Gecko/20100101 Firefox/103.0",
@@ -74,6 +75,7 @@ func RandomUA() string {
 	return userAgent[rand.New(rand.NewSource(time.Now().Unix())).Intn(len(userAgent))]
 }
 
+// 随机sleep
 func RandSleep(millisencond int) {
 	ms := millisencond + rand.Intn(millisencond)
 	time.Sleep(time.Duration(ms) * time.Millisecond)

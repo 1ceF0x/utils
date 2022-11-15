@@ -2,10 +2,37 @@ package utils
 
 import (
 	"bufio"
+	utils "github.com/1ceF0x/utils/rand"
 	"io"
 	"log"
 	"os"
+	"sync"
 )
+
+type Syncfile struct {
+	mutex     *sync.Mutex
+	iohandler *os.File
+}
+
+func NewSyncFile(filename string) (*Syncfile, error) {
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		return nil, err
+	}
+	return &Syncfile{mutex: &sync.Mutex{}, iohandler: f}, nil
+}
+
+func (sf *Syncfile) Write(content string) {
+	sf.mutex.Lock()
+
+	wbuf := bufio.NewWriterSize(sf.iohandler, len(content))
+	wbuf.WriteString(content)
+	wbuf.Flush()
+
+	utils.RandSleep(1000)
+
+	sf.mutex.Unlock()
+}
 
 // 判断文件是否存在
 func Exists(path string) bool {
@@ -54,7 +81,7 @@ func ReadFileScanner(fileName string) (*os.File, *bufio.Scanner, error) {
 }
 
 // 读取文件内容
-func ReadFileByte(fileName string) ([]byte, error) {
+func ReadFileBytes(fileName string) ([]byte, error) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
