@@ -2,7 +2,6 @@ package slice
 
 import (
 	"sort"
-	"strings"
 )
 
 // 切片是否包含元素
@@ -29,8 +28,4 @@ func SliceRemoveDuplicates[T int | string](slice []T) []T {
 		}
 	}
 	return slice[:uniqPointer+1]
-}
-
-func IsBlank(value string) bool {
-	return strings.TrimSpace(value) == ""
 }
