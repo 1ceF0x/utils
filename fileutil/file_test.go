@@ -1,4 +1,4 @@
-package file
+package fileutil
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ func TestFile(t *testing.T) {
 	fileNot := "notexists.go"
 	fmt.Println(Exists(fileHas))
 	fmt.Println(Exists(fileNot))
-	fmt.Println(IsDir("../file"))
+	fmt.Println(IsDir("../fileutil"))
 
 	strs, _ := ReadFileLines(fileHas)
 	for _, v := range strs {

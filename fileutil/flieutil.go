@@ -1,8 +1,8 @@
-package file
+package fileutil
 
 import (
 	"bufio"
-	utils "github.com/1ceF0x/utils/rand"
+	"github.com/1ceF0x/utils/randutil"
 	"io"
 	"log"
 	"os"
@@ -29,7 +29,7 @@ func (sf *Syncfile) Write(content string) {
 	wbuf.WriteString(content)
 	wbuf.Flush()
 
-	utils.RandSleep(1000)
+	randutil.RandSleep(1000)
 
 	sf.mutex.Unlock()
 }
