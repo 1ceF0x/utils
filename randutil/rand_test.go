@@ -18,4 +18,9 @@ func TestRand(t *testing.T) {
 	fmt.Println(RandNumberStringUpper(length))
 	fmt.Println(RandUserAgent())
 
+	test := []string{"aaa", "bbb", "ccc", "ddd", "eee"}
+	test1 := []int{1, 2, 3, 4, 5}
+	fmt.Println(RandFromSlice(test))
+	fmt.Println(RandFromSlice(test1))
+
 }

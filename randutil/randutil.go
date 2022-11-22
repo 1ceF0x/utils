@@ -30,6 +30,12 @@ func RandFromChoices(choices string, length int) string {
 	return container
 }
 
+// 从切片随机取一个值
+func RandFromSlice[T string | int](slice []T) T {
+	randomInt, _ := rand.Int(rand.Reader, big.NewInt(int64(len(slice))))
+	return slice[randomInt.Int64()]
+}
+
 // 随机大小写字母
 func RandString(length int) string {
 	return RandFromChoices(letter, length)
