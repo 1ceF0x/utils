@@ -4,14 +4,13 @@ import (
 	"bufio"
 	"github.com/1ceF0x/utils/randutil"
 	"io"
-	"log"
 	"os"
 	"sync"
 )
 
 type Syncfile struct {
 	mutex     *sync.Mutex
-	iohandler *os.File
+	ioHandler *os.File
 }
 
 func NewSyncFile(filename string) (*Syncfile, error) {
@@ -19,24 +18,21 @@ func NewSyncFile(filename string) (*Syncfile, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Syncfile{mutex: &sync.Mutex{}, iohandler: f}, nil
+	return &Syncfile{mutex: &sync.Mutex{}, ioHandler: f}, nil
 }
 
 func (sf *Syncfile) Write(content string) {
 	sf.mutex.Lock()
-
-	wbuf := bufio.NewWriterSize(sf.iohandler, len(content))
-	wbuf.WriteString(content)
-	wbuf.Flush()
-
+	wBuf := bufio.NewWriterSize(sf.ioHandler, len(content))
+	wBuf.WriteString(content)
+	wBuf.Flush()
 	randutil.RandSleep(1000)
-
 	sf.mutex.Unlock()
 }
 
 // 判断文件是否存在
 func Exists(path string) bool {
-	_, err := os.Stat(path) //os.Stat获取文件信息
+	_, err := os.Stat(path)
 	if err != nil {
 		return os.IsExist(err)
 	}
@@ -55,7 +51,6 @@ func IsDir(path string) bool {
 // 读取文件每行内容
 func ReadFileLines(fileName string) ([]string, error) {
 	var result []string
-
 	file, err := os.Open(fileName)
 	if err != nil {
 		return result, err
@@ -63,7 +58,7 @@ func ReadFileLines(fileName string) ([]string, error) {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := scanner.Text() //获取每一行
+		line := scanner.Text()
 		result = append(result, line)
 	}
 	return result, err
@@ -89,26 +84,19 @@ func ReadFileBytes(fileName string) ([]byte, error) {
 	defer file.Close()
 	data, err := io.ReadAll(file)
 	if err != nil {
-		log.Println("读取文件失败: ", err)
 		return nil, err
 	}
 	return data, nil
 }
 
 // 追加写入文件
-func BufferWriteAppend(fileName string, param string) error {
-	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND|os.O_SYNC, 0660)
+func BufferWriteAppend(fileName string, content string) error {
+	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND|os.O_SYNC, 0666)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
-	// NewWriter 默认缓冲区大小是 4096
-	// 需要使用自定义缓冲区的writer 使用 NewWriterSize()方法
 	buf := bufio.NewWriter(file)
-	// 字节写入
-	//buf.Write([]byte(param))
-	// 字符串写入
-	buf.WriteString(param + "\n")
-	// 将缓冲中的数据写入
+	buf.WriteString(content)
 	return buf.Flush()
 }
