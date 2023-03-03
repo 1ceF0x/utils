@@ -90,8 +90,20 @@ func ReadFileBytes(fileName string) ([]byte, error) {
 }
 
 // 追加写入文件
-func BufferWriteAppend(fileName string, content string) error {
+func WriteFileAppend(fileName string, content string) error {
 	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_APPEND|os.O_SYNC, 0666)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	buf := bufio.NewWriter(file)
+	buf.WriteString(content)
+	return buf.Flush()
+}
+
+// 覆盖写入文件
+func WriteFile(fileName string, content string) error {
+	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_SYNC, 0666)
 	if err != nil {
 		return err
 	}

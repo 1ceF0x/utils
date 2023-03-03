@@ -29,3 +29,15 @@ func SliceRemoveDuplicates[T int | string](slice []T) []T {
 	}
 	return slice[:uniqPointer+1]
 }
+
+// 切片移除指定元素
+func SliceRemoveElement[T int | string](slice []T, elem T) []T {
+	i := 0
+	for _, v := range slice {
+		if v != elem {
+			slice[i] = v
+			i++
+		}
+	}
+	return slice[:i]
+}
