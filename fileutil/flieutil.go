@@ -103,7 +103,7 @@ func WriteFileAppend(fileName string, content string) error {
 
 // 覆盖写入文件
 func WriteFile(fileName string, content string) error {
-	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_SYNC, 0666)
+	file, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC|os.O_SYNC, 0666)
 	if err != nil {
 		return err
 	}
